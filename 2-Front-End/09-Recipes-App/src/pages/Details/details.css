@@ -1,0 +1,15 @@
+.scroll-recommends {
+  overflow: auto;
+  white-space: nowrap;
+  width: 230px;
+}
+
+.recomendation-card {
+  display: inline-block;
+  width: 120px;
+}
+
+.start-recipe-btn {
+  bottom: 0;
+  position: fixed;
+}

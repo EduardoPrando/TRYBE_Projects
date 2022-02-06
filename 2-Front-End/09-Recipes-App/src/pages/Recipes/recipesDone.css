@@ -1,0 +1,21 @@
+.divCard {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  border-radius: solid , black , 1px;
+  display: flex;
+  flex-wrap: wrap;
+  height: 150px;
+  width: 300px;
+}
+
+.imgCard {
+  height: 100px;
+  width: 100px;
+}
+
+.textClass {
+  font-size: small;
+}

@@ -1,0 +1,68 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "StarJedy";
+  src: url(../../font/star_jedi/starjedi/Starjedi.ttf);
+}
+
+.buttons {
+  height: 30px;
+  width: 60px;
+}
+
+.logoStarWars {
+  width: 220px;
+}
+
+.headerClass {
+  align-items: center;
+  background-image: url(../../img/headerBG.jpg);
+  background-position: right;
+  border: #dfdfdf solid 5px;
+  border-radius: 15px;
+  color: #fae317e8;
+  display: flex;
+  flex-direction: column;
+  font-family:  StarJedy;
+  height: 22vh;
+  justify-content: center;
+  margin: 20px;
+}
+
+.filtersBox{
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.filters {
+  background-color: #dfdfdf;
+  border: #242424 solid 1px;
+  border-radius: 5px;
+  margin: 3px;
+  padding: 5px;
+}
+
+.sortedDiv {
+  align-items: center;
+  background-color: #dfdfdf;
+  border: #242424 solid 1px;
+  color: #242424;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-evenly;
+  width: 50vh;
+}
+
+.sortBox {
+  align-self: center;
+  align-items: center;
+  border-radius: 5px;
+  display: flex;
+  margin: 3px;
+  padding: 4px;
+}

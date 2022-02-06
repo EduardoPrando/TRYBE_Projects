@@ -1,0 +1,289 @@
+//1 
+use("aggregations")
+// db.movies.aggregate([
+//   {
+//     $match: {
+//       "imdb.rating": { $gte: 7 },
+//       genres: { $nin: ["Crime", "Horror"] },
+//       rated: { $in: ["PG", "G"] },
+//       languages: { $all: ["English", "Spanish"] },
+//     },
+//   },
+// ]);
+
+//2
+// db.movies.aggregate([
+//   {
+//     $match: {
+//       "imdb.rating": { $gte: 7 },
+//       genres: { $nin: ["Crime", "Horror"] },
+//       rated: { $in: ["PG", "G"] },
+//       languages: { $all: ["English", "Spanish"] },
+//     },
+//   },
+//   {
+//     $project: {
+//       _id: false,
+//       titulo: "$title",
+//       avaliado: "$rated",
+//       notaIMDB: "$imdb.rating",
+//       votosIMDB: "$imdb.votes",
+//       ano: "$year",
+//     },
+//   },
+// ]);
+
+//3
+// db.movies.aggregate([
+//   {
+//     $match: {
+//       "imdb.rating": { $gte: 7 },
+//       genres: { $nin: ["Crime", "Horror"] },
+//       rated: { $in: ["PG", "G"] },
+//       languages: { $all: ["English", "Spanish"] },
+//     },
+//   },
+//   {
+//     $project: {
+//       _id: false,
+//       titulo: "$title",
+//       avaliado: "$rated",
+//       notaIMDB: "$imdb.rating",
+//       votosIMDB: "$imdb.votes",
+//       ano: "$year",
+//     },
+//   },
+//   {
+//     $sort: {
+//       ano: -1,
+//       notaIMDB: -1,
+//       titulo: 1,
+//     },
+//   },
+// ]);
+
+//4
+
+// db.movies.aggregate([
+//   {
+//     $project: { title_split: { 
+//       $split: ["$title", " "],
+//      },
+//     _id: false,
+//     },
+//   },
+//   {
+//     $sort: { title_split: 1 },
+//   },
+//   {
+//     $match: { title_split: { $size: 1 } },
+//   }
+// ]);
+
+// 5
+
+// db.movies.aggregate([
+//   { $match: {
+//     countries: "USA",
+//     "tomatoes.viewer.rating": { $gte: 3 },
+//     cast: { $exists: true },
+//   } },
+//   { $addFields: {
+//     favoriteCast: {
+//       $setIntersection: [
+//         [
+//           "Sandra Bullock",
+//           "Tom Hanks",
+//           "Julia Roberts",
+//           "Kevin Spacey",
+//           "George Clooney"
+//         ],
+//         "$cast",
+//       ],
+//     },
+//   } },
+//   { $addFields: {
+//     num_favs: { $size: "$favoriteCast" },
+//   } },
+//   { $sort: {
+//     num_favs: -1,
+//     "tomatoes.viewer.rating": -1,
+//     title: -1,
+//   } },
+//   { $skip: 24 },
+//   { $limit: 1 },
+//   { $project: {
+//     _id: false,
+//     title: true,
+//   } },
+// ]);
+
+//6
+// db.movies.aggregate([
+//   { $match: { awards: { $regex: /Won [0-9] Oscar/ } } },
+//   { $group: {
+//     _id: null,
+//     "maior_rating": { $max: "$imdb.rating" },
+//     "menor_rating": { $min: "$imdb.rating" },
+//     "media_rating": { $avg: "$imdb.rating" },
+//     "desvio_padrao": { $stdDevSamp: "$imdb.rating" },
+//   } },
+//   { $project: {
+//     _id: false,
+//     "maior_rating": true,
+//     "menor_rating": true,
+//     "media_rating": { $round: ["$media_rating", 1] },
+//     "desvio_padrao": { $round: ["$desvio_padrao", 1] },
+//   } },
+// ]);
+
+//7
+// 
+// db.movies.aggregate([
+//   { $match: { languages: "English" } },
+//   { $unwind: "$cast" },
+//   { $group: {
+//     _id: "$cast",
+//     numeroFilmes: { $sum: 1 },
+//     mediaIMDB: { $avg: "$imdb.rating" },
+//   } },
+//   { $sort: { numeroFilmes: -1 } },
+//   { $project: {
+//     _id: true,
+//     numeroFilmes: true,
+//     mediaIMDB: { $round: ["$mediaIMDB", 1] },
+//   } },
+// ]);
+
+
+// 8
+// db.air_alliances.find()
+// db.air_routes.find();
+// db.air_alliances.aggregate([
+//   { $lookup: {
+//     from: "air_routes",
+//     localField: "airlines",
+//     foreignField: "airline.name",
+//     as: "totalVoos",
+//   } },
+  
+//   { $unwind: "$totalVoos" },
+//   { $match: { "totalVoos.airplane": { $in: ["747", "380"] } } },
+//   { $group: {
+//     _id: "$name",
+//     totalRotas: { $sum: 1 },
+//    } },
+//    { $sort: { totalRotas: -1 } },
+//    { $limit: 1 },
+// ]);
+
+//9
+// db.trips.aggregate([
+//   { $match: { birthYear: { $exists: true, $ne: "" } } },
+//   { $group: {
+//     _id: null,
+//     maiorAnoNascimento: { $max: { $toInt: "$birthYear" } },
+//     menorAnoNascimento: { $min: { $toInt: "$birthYear" } },
+//   } },
+//   { $project: {
+//     _id: false,
+//     maiorAnoNascimento: true,
+//     menorAnoNascimento: true,
+//   } },
+// ]);
+
+// 10
+// db.trips.find();
+// db.trips.aggregate([
+//   { $group: {
+//     _id: "$usertype",
+//     duracaoMedia: { $avg: {
+//       $divide: [{
+//         $subtract: ["$stopTime", "$startTime"],
+//       }, 1000 * 60 * 60],
+//     } },
+//   } },
+//   { $sort: { duracaoMedia: 1 } },
+//   { $project: {
+//     _id: false,
+//     tipo: "$_id",
+//     duracaoMedia: { $round: ["$duracaoMedia", 2] },
+//   } },
+// ]);
+
+
+//11
+// db.trips.aggregate([
+//   { $addFields: { diaDaSemana: { $dayOfWeek: "$startTime" } } },
+//   { $group: {
+//     _id: "$diaDaSemana",
+//     total: { $sum: 1 },
+//   } },
+//   { $sort: { total: -1 } },
+//   { $limit: 1 },
+//   { $project: {
+//     _id: false,
+//     diaDaSemana: "$_id",
+//     total: "$total",
+//   } },
+// ]);
+
+//12
+// db.trips.find();
+// db.trips.aggregate([
+//   { $match: {
+//     $expr: {
+//       $eq: [{ $dayOfWeek: "$startTime" }, 5],
+//     },
+//   } },
+//   { $group: {
+//     _id: "$startStationName",
+//     total: { $sum: 1 },
+//   } },
+//   { $sort: { total: -1 } },
+//   { $limit: 1 },
+//   { $project: {
+//     _id: false,
+//     nomeEstacao: "$_id",
+//     total: "$total",
+//   } },
+// ]);
+
+// 13
+// db.trips.find();
+// db.trips.aggregate([
+  // { $match: {
+    // $expr: {
+      // $eq: [
+        //  new Date("2016-03-10"),
+        //  "$startTime",
+      // ],
+    // },
+  // } },
+// ]);
+
+/*
+https://docs.mongodb.com/manual/reference/operator/aggregation/dateDiff/
+*/
+db.trips.aggregate([
+  { $match: {
+    startTime: {
+      $gte: new Date("2016-03-10"),
+      $lt: new Date("2016-3-11"),
+    },
+  } },
+  
+  { $group: {
+    _id: null,
+    toMinutes: {
+      $avg: { $dateDiff: {
+          startDate: "$startTime",
+          endDate: "$stopTime",
+          unit: "minute",
+      } },
+   } } },
+   { $project: {
+     _id: false,
+     duracaoMediaEmMinutos: { $ceil: "$toMinutes"},
+   } },
+]);

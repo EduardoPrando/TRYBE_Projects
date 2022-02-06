@@ -1,0 +1,43 @@
+a:link {
+  text-decoration: none;
+}
+
+article {
+  line-height: 25px;
+}
+
+body {
+  background-color: rgb(253, 251, 251);
+}
+
+#cabecalho {
+  position: fixed;
+  top: 0;
+  padding: 10px;
+  color: crimson;
+}
+
+#minha_foto {
+  border: 20px;
+  margin: 90px 0 0 150px;
+}
+
+#trybe_link {
+  margin: 5px;
+  padding: 50px;
+  background-color: green;
+  text-align: center;
+  font-size: 50px;
+  font-family: sans-serif;
+  letter-spacing: 3px;
+}
+
+.lado-esquerdo {
+  width: 45%;
+  display: inline-block;
+}
+
+.lado-direito {
+  width: 20%;
+  display: inline-block;
+}
